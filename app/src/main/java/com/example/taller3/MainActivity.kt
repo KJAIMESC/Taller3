@@ -1,20 +1,32 @@
 package com.example.taller3
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.LottieCompositionFactory
+import com.airbnb.lottie.LottieListener
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var animationView: LottieAnimationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        animationView = findViewById(R.id.animation_view)
+
+        // Load LottieComposition from raw resource
+        val compositionTask = LottieCompositionFactory.fromRawRes(this, R.raw.spylottie)
+        compositionTask.addListener(object : LottieListener<LottieComposition> {
+            override fun onResult(result: LottieComposition?) {
+                result?.let {
+                    animationView.setComposition(it)
+                    animationView.playAnimation()
+                }
+            }
+        })
     }
 }
+
