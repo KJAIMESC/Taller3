@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/set_as_available"
+        android:title="Establecerse como disponible"/>
+</menu>

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Taller3</string>
+    <string name="page_title">Taller 3</string>
+    <string name="favorite">Favorite</string>
+    <string name="search">Search</string>
+    <string name="more">More</string>
+    <string name="salir">Salir</string>
+    <string name="perfil">Perfil</string>
+    <string name="descriptive_text_for_scroll_view">Descripción detallada del contenido desplazable en esta pantalla</string>
 </resources>
