@@ -43,7 +43,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("androidx.fragment:fragment:1.3.6")
-
+    implementation("com.google.android.gms:play-services-location:18.0.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

@@ -9,12 +9,6 @@
     tools:context=".MapaActivity"
     tools:ignore="ExtraText">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,4 +32,10 @@
         </com.google.android.material.appbar.AppBarLayout>
 
     </FrameLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
 </RelativeLayout>
