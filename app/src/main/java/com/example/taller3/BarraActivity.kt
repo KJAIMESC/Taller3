@@ -29,7 +29,10 @@ class BarraActivity : AppCompatActivity(){
                     true
                 }
                 R.id.perfil -> {
-                    // Manejar clic en el icono de búsqueda
+                    //nos ibamos a perfim
+                    val intent = Intent(this,PerfilActivity::class.java)
+                    startActivity(intent)
+                    finish()
                     true
                 }
                 R.id.more -> {
