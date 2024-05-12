@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.volley)
     val fragment_version = "1.7.0"
 
     implementation("androidx.core:core-ktx:1.13.1")
