@@ -6,5 +6,9 @@
     <string name="more">More</string>
     <string name="salir">Salir</string>
     <string name="perfil">Perfil</string>
+    <string name="correo">Correo</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="registro">Registrarme</string>
+    <string name="inicio">Iniciar Sesion</string>
     <string name="descriptive_text_for_scroll_view">Descripción detallada del contenido desplazable en esta pantalla</string>
 </resources>
