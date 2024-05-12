@@ -36,6 +36,7 @@
         android:layout_marginHorizontal="16dp"
         android:hint="@string/nombre"
         app:layout_constraintTop_toBottomOf="@id/tvHeader"
+        app:layout_constraintBottom_toTopOf="@id/tilLastName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -50,9 +51,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
         android:hint="@string/apellido"
         app:layout_constraintTop_toBottomOf="@id/tilName"
+        app:layout_constraintBottom_toTopOf="@id/tilEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -70,6 +72,7 @@
         android:layout_marginHorizontal="16dp"
         android:hint="@string/correo"
         app:layout_constraintTop_toBottomOf="@id/tilLastName"
+        app:layout_constraintBottom_toTopOf="@id/tilPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -90,6 +93,7 @@
         android:hint="@string/contraseña"
         app:passwordToggleEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/tilEmail"
+        app:layout_constraintBottom_toTopOf="@id/"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
