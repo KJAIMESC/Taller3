@@ -11,5 +11,11 @@
     <string name="registro">REGISTRARME</string>
     <string name="inicio">INICIAR SESION</string>
     <string name="olvido">Olvido su contraseña</string>
+    <string name="titulo_resgistro">Registrarme</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="id">Numero de Identificacion</string>
+    <string name="latitud">Latitud</string>
+    <string name="longitud">Longitud</string>
     <string name="descriptive_text_for_scroll_view">Descripción detallada del contenido desplazable en esta pantalla</string>
 </resources>
