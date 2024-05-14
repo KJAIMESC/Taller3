@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class PerfilActivity : AppCompatActivity() {
+class PerfilActivity : BarraActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference

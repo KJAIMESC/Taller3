@@ -5,16 +5,16 @@
         android:id="@+id/salir_perfil"
         android:icon="@drawable/ic_exit_to_app_24"
         android:title="@string/salir"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/perfil"
         android:icon="@drawable/ic_person_24"
         android:title="@string/perfil"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/more"
         android:title="@string/more"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

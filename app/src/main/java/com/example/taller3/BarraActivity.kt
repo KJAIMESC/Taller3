@@ -7,11 +7,18 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
 
-class BarraActivity : AppCompatActivity(){
+open class BarraActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barra)
+    }
 
+    override fun setContentView(layoutResID: Int) {
+        super.setContentView(layoutResID)
+        setupToolbar()
+    }
+
+    protected fun setupToolbar() {
         val toolbar: MaterialToolbar = findViewById(R.id.topAppBar)
         setSupportActionBar(toolbar)
 
@@ -22,15 +29,13 @@ class BarraActivity : AppCompatActivity(){
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.salir_perfil -> {
-                    // Cuando se selecciona "Salir del perfil", inicia MainActivity
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                     true
                 }
                 R.id.perfil -> {
-                    //nos ibamos a perfim
-                    val intent = Intent(this,PerfilActivity::class.java)
+                    val intent = Intent(this, PerfilActivity::class.java)
                     startActivity(intent)
                     finish()
                     true
@@ -59,4 +64,3 @@ class BarraActivity : AppCompatActivity(){
         popup.show()
     }
 }
-

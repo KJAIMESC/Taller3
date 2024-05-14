@@ -20,15 +20,13 @@
             app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/ic_menu_24"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- El resto de tu layout va aquí, por ejemplo, un NestedScrollView -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/descriptive_text_for_scroll_view"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-</androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <!-- Contenido que será sobreescrito por actividades hijas -->
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
