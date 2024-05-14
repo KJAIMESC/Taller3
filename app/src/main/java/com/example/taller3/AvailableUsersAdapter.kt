@@ -6,22 +6,24 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class AvailableUsersAdapter(private val usersList: List<String>) :
-    RecyclerView.Adapter<AvailableUsersAdapter.ViewHolder>() {
+class AvailableUsersAdapter(private val users: List<String>) :
+    RecyclerView.Adapter<AvailableUsersAdapter.UserViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val userTextView: TextView = view.findViewById(R.id.userTextView)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_user, parent, false)
-        return ViewHolder(view)
+        return UserViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.userTextView.text = usersList[position]
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        holder.userTextView.text = users[position]
     }
 
-    override fun getItemCount() = usersList.size
+    override fun getItemCount(): Int {
+        return users.size
+    }
 }
