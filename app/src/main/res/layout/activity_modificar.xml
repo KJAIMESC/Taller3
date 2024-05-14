@@ -44,7 +44,7 @@
                 android:id="@+id/apellidoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="apellido"
+                android:hint="Apellido"
                 app:layout_constraintTop_toBottomOf="@id/nombreEditText"/>
 
             <com.google.android.material.textfield.TextInputEditText
@@ -58,11 +58,31 @@
                 android:id="@+id/IdEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Numero de identificacion"
+                android:hint="Número de identificación"
                 app:layout_constraintTop_toBottomOf="@id/correoEditText" />
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                app:layout_constraintTop_toBottomOf="@id/IdEditText" />
 
-            <!-- Añade otros campos según sea necesario -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirmPasswordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirmar contraseña"
+                android:inputType="textPassword"
+                app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+
+            <Button
+                android:id="@+id/guardarCambiosButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar cambios"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
