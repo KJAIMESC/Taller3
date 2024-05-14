@@ -14,8 +14,8 @@ class ModificarInformacionActivity : BarraActivity() {
 
     private lateinit var nombreEditText: TextInputEditText
     private lateinit var correoEditText: TextInputEditText
-    private lateinit var latitudEditText: TextInputEditText
-    private lateinit var longitudEditText: TextInputEditText
+    private lateinit var apellidoEditText: TextInputEditText
+    private lateinit var IdEditText: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +27,8 @@ class ModificarInformacionActivity : BarraActivity() {
 
         nombreEditText = findViewById(R.id.nombreEditText)
         correoEditText = findViewById(R.id.correoEditText)
-        latitudEditText = findViewById(R.id.latitudEditText)
-        longitudEditText = findViewById(R.id.longitudEditText)
+        apellidoEditText = findViewById(R.id.apellidoEditText)
+        IdEditText = findViewById(R.id.IdEditText)
 
         val currentUser = auth.currentUser
         currentUser?.let {
@@ -41,8 +41,8 @@ class ModificarInformacionActivity : BarraActivity() {
 
                 nombreEditText.setText(name)
                 correoEditText.setText(email)
-                latitudEditText.setText(latitud)
-                longitudEditText.setText(longitud)
+                apellidoEditText.setText(latitud)
+                IdEditText.setText(longitud)
             }
         }
     }
