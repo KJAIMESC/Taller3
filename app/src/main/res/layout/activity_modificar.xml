@@ -41,11 +41,18 @@
                 android:hint="Nombre" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/apellidoEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="apellido"
+                app:layout_constraintTop_toBottomOf="@id/nombreEditText"/>
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/correoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Correo"
-                app:layout_constraintTop_toBottomOf="@id/nombreEditText" />
+                app:layout_constraintTop_toBottomOf="@id/apellidoEditText" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/IdEditText"
