@@ -4,12 +4,10 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Email
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -20,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class RegistroActivity: AppCompatActivity() {
+class RegistroActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var bSignUp: Button
     private lateinit var etName: TextInputEditText
@@ -39,7 +37,6 @@ class RegistroActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_registro)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -55,7 +52,7 @@ class RegistroActivity: AppCompatActivity() {
         etLatitud = findViewById(R.id.etLatitud)
         etLongitud = findViewById(R.id.etLongitud)
 
-
+        // Solicitar permisos de ubicación si no están concedidos
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         } else {
@@ -73,7 +70,9 @@ class RegistroActivity: AppCompatActivity() {
                 etLastName.text?.isNotEmpty() == true &&
                 etEmail.text?.isNotEmpty() == true &&
                 etPassword.text?.isNotEmpty() == true &&
-                etId.text?.isNotEmpty() == true
+                etId.text?.isNotEmpty() == true &&
+                etLatitud.text?.isNotEmpty() == true &&
+                etLongitud.text?.isNotEmpty() == true
             ) {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
@@ -92,17 +91,17 @@ class RegistroActivity: AppCompatActivity() {
                                 "longitud" to etLongitud.text.toString()
                             )
 
-                            database.child("users").child(uid).setValue(userMap).addOnCompleteListener {
-                                if (it.isSuccessful) {
+                            database.child("users").child(uid).setValue(userMap).addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
                                     val perfilIntent = Intent(this, PerfilActivity::class.java)
                                     startActivity(perfilIntent)
                                 } else {
-                                    showAlert("Error al guardar los datos del usuario.")
+                                    showAlert("Error al guardar los datos del usuario: ${task.exception?.message}")
                                 }
                             }
                         }
                     } else {
-                        showAlert()
+                        showAlert("Error autenticando al usuario: ${task.exception?.message}")
                     }
                 }
             } else {
@@ -111,7 +110,7 @@ class RegistroActivity: AppCompatActivity() {
         }
     }
 
-    private fun showAlert(message: String = "Error autenticando al usuario") {
+    private fun showAlert(message: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage(message)
@@ -121,14 +120,7 @@ class RegistroActivity: AppCompatActivity() {
     }
 
     private fun getLastKnownLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -151,5 +143,4 @@ class RegistroActivity: AppCompatActivity() {
             }
         }
     }
-
 }
