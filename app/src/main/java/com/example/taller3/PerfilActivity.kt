@@ -50,6 +50,7 @@ class PerfilActivity : BarraActivity() {
         val currentUser = auth.currentUser
         currentUser?.let {
             val uid = currentUser.uid
+            Log.d("PerfilActivity", "UID del usuario actual: $uid")
             database.child("users").child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val name = dataSnapshot.child("name").value.toString()
@@ -57,6 +58,8 @@ class PerfilActivity : BarraActivity() {
                     val latitud = dataSnapshot.child("latitud").value.toString()
                     val longitud = dataSnapshot.child("longitud").value.toString()
                     val estado = dataSnapshot.child("estado").value.toString()
+
+                    Log.d("PerfilActivity", "Datos del usuario actual: $name, $email, $latitud, $longitud, $estado")
 
                     nombreTextView.text = name
                     correoTextView.text = email
@@ -73,6 +76,7 @@ class PerfilActivity : BarraActivity() {
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("PerfilActivity", "Error al obtener los datos del usuario.", databaseError.toException())
                     Toast.makeText(this@PerfilActivity, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show()
                 }
             })
@@ -92,16 +96,39 @@ class PerfilActivity : BarraActivity() {
                             }
                         }
                     }
-                    availableUsersRecyclerView.adapter = AvailableUsersAdapter(availableUsers)
                     Log.d("PerfilActivity", "Total de usuarios disponibles: ${availableUsers.size}")
+                    availableUsersRecyclerView.adapter = AvailableUsersAdapter(availableUsers)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e("PerfilActivity", "Error al obtener la lista de usuarios disponibles.", databaseError.toException())
                     Toast.makeText(this@PerfilActivity, "Error al obtener la lista de usuarios disponibles.", Toast.LENGTH_SHORT).show()
                 }
             })
         } ?: run {
+            Log.e("PerfilActivity", "Usuario no autenticado.")
             Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
