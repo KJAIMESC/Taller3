@@ -4,13 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 open class BarraActivity : AppCompatActivity() {
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
     }
 
     override fun setContentView(layoutResID: Int) {
@@ -50,6 +59,14 @@ open class BarraActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+                R.id.set_as_available -> {
+                    setAvailabilityStatus(true)
+                    true
+                }
+                R.id.set_as_unavailable -> {
+                    setAvailabilityStatus(false)
+                    true
+                }
                 else -> false
             }
         }
@@ -61,12 +78,32 @@ open class BarraActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.set_as_available -> {
+                    setAvailabilityStatus(true)
                     true
                 }
-                // Agrega más casos si hay más ítems
+                R.id.set_as_unavailable -> {
+                    setAvailabilityStatus(false)
+                    true
+                }
                 else -> false
             }
         }
         popup.show()
+    }
+
+    private fun setAvailabilityStatus(isAvailable: Boolean) {
+        val currentUser = auth.currentUser
+        currentUser?.let {
+            val uid = currentUser.uid
+            val status = if (isAvailable) "disponible" else "no disponible"
+            database.child("users").child(uid).child("estado").setValue(status).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val message = if (isAvailable) "Estás disponible" else "No estás disponible"
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Error al actualizar el estado", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
