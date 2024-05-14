@@ -2,7 +2,6 @@ package com.example.taller3
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +11,6 @@ open class BarraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // No establezcas el contenido aquí, se establecerá en las actividades que hereden de esta
     }
 
     override fun setContentView(layoutResID: Int) {
@@ -20,7 +18,7 @@ open class BarraActivity : AppCompatActivity() {
         setupToolbar()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.top_app_bar, menu)
         return true
     }
@@ -48,7 +46,8 @@ open class BarraActivity : AppCompatActivity() {
                     true
                 }
                 R.id.more -> {
-                    // Manejar más elementos en el menú desbordamiento
+                    val intent = Intent(this, ModificarActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
