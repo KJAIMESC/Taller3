@@ -95,7 +95,7 @@ open class BarraActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         currentUser?.let {
             val uid = currentUser.uid
-            val status = if (isAvailable) "disponible" else "no disponible"
+            val status = if (isAvailable) "Disponible" else "No disponible"
             database.child("users").child(uid).child("estado").setValue(status).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val message = if (isAvailable) "Estás disponible" else "No estás disponible"

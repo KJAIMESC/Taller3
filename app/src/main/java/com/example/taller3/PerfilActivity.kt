@@ -1,12 +1,17 @@
 package com.example.taller3
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.getValue
 
 class PerfilActivity : BarraActivity() {
 
@@ -18,6 +23,8 @@ class PerfilActivity : BarraActivity() {
     private lateinit var latitudTextView: TextView
     private lateinit var longitudTextView: TextView
     private lateinit var estadoTextView: TextView
+    private lateinit var availableUsersRecyclerView: RecyclerView
+    private lateinit var mapButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +38,15 @@ class PerfilActivity : BarraActivity() {
         latitudTextView = findViewById(R.id.latitud)
         longitudTextView = findViewById(R.id.longitud)
         estadoTextView = findViewById(R.id.estado)
+        availableUsersRecyclerView = findViewById(R.id.availableUsersRecyclerView)
+        mapButton = findViewById(R.id.mapButton)
+
+        availableUsersRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        mapButton.setOnClickListener {
+            val intent = Intent(this, MapaActivity::class.java)
+            startActivity(intent)
+        }
 
         val currentUser = auth.currentUser
         currentUser?.let {
@@ -56,6 +72,24 @@ class PerfilActivity : BarraActivity() {
                 estadoTextView.setTextColor(color)
             }.addOnFailureListener {
                 Toast.makeText(this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show()
+            }
+
+            // Obtener la lista de usuarios disponibles
+            database.child("users").get().addOnSuccessListener { dataSnapshot ->
+                val availableUsers = mutableListOf<String>()
+                for (snapshot in dataSnapshot.children) {
+                    val userStatus = snapshot.child("estado").getValue<String>()
+                    if (userStatus == "disponible") {
+                        val userName = snapshot.child("name").getValue<String>()
+                        val userEmail = snapshot.child("email").getValue<String>()
+                        if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
+                            availableUsers.add("$userName - $userEmail")
+                        }
+                    }
+                }
+                availableUsersRecyclerView.adapter = AvailableUsersAdapter(availableUsers)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Error al obtener la lista de usuarios disponibles.", Toast.LENGTH_SHORT).show()
             }
         } ?: run {
             Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()

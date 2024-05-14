@@ -7,5 +7,4 @@
         android:id="@+id/set_as_unavailable"
         android:title="No disponible"
         android:icon="@drawable/baseline_location_off_24" />
-    <!-- Otros ítems del menú -->
 </menu>
