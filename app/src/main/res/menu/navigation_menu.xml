@@ -1,5 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/set_as_available"
-        android:title="Establecerse como disponible"/>
+        android:title="Disponible"
+        android:icon="@drawable/baseline_location_on_24" />
+    <item
+        android:id="@+id/set_as_unavailable"
+        android:title="No disponible"
+        android:icon="@drawable/baseline_location_off_24" />
+    <!-- Otros ítems del menú -->
 </menu>
