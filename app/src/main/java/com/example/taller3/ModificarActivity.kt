@@ -1,33 +1,34 @@
 package com.example.taller3
 
 import android.os.Bundle
-import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class PerfilActivity : BarraActivity() {
+class ModificarInformacionActivity : BarraActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
 
-    private lateinit var nombreTextView: TextView
-    private lateinit var correoTextView: TextView
-    private lateinit var latitudTextView: TextView
-    private lateinit var longitudTextView: TextView
+    private lateinit var nombreEditText: TextInputEditText
+    private lateinit var correoEditText: TextInputEditText
+    private lateinit var latitudEditText: TextInputEditText
+    private lateinit var longitudEditText: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_perfil)
+        setContentView(R.layout.activity_modificar)
+        setupToolbar()
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-        nombreTextView = findViewById(R.id.nombre)
-        correoTextView = findViewById(R.id.correo)
-        latitudTextView = findViewById(R.id.latitud)
-        longitudTextView = findViewById(R.id.longitud)
+        nombreEditText = findViewById(R.id.nombreEditText)
+        correoEditText = findViewById(R.id.correoEditText)
+        latitudEditText = findViewById(R.id.latitudEditText)
+        longitudEditText = findViewById(R.id.longitudEditText)
 
         val currentUser = auth.currentUser
         currentUser?.let {
@@ -38,15 +39,11 @@ class PerfilActivity : BarraActivity() {
                 val latitud = dataSnapshot.child("latitud").value.toString()
                 val longitud = dataSnapshot.child("longitud").value.toString()
 
-                nombreTextView.text = name
-                correoTextView.text = email
-                latitudTextView.text = latitud
-                longitudTextView.text = longitud
-            }.addOnFailureListener {
-                Toast.makeText(this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show()
+                nombreEditText.setText(name)
+                correoEditText.setText(email)
+                latitudEditText.setText(latitud)
+                longitudEditText.setText(longitud)
             }
-        } ?: run {
-            Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()
         }
     }
 }

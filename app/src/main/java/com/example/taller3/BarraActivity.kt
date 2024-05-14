@@ -2,6 +2,7 @@ package com.example.taller3
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
@@ -11,11 +12,17 @@ open class BarraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // No establezcas el contenido aquí, se establecerá en las actividades que hereden de esta
     }
 
     override fun setContentView(layoutResID: Int) {
         super.setContentView(layoutResID)
         setupToolbar()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+        return true
     }
 
     protected fun setupToolbar() {
