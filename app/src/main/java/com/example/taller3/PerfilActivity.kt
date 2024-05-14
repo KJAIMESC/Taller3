@@ -2,6 +2,7 @@ package com.example.taller3
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -9,9 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.getValue
+import com.google.firebase.database.*
 
 class PerfilActivity : BarraActivity() {
 
@@ -51,46 +50,56 @@ class PerfilActivity : BarraActivity() {
         val currentUser = auth.currentUser
         currentUser?.let {
             val uid = currentUser.uid
-            database.child("users").child(uid).get().addOnSuccessListener { dataSnapshot ->
-                val name = dataSnapshot.child("name").value.toString()
-                val email = dataSnapshot.child("email").value.toString()
-                val latitud = dataSnapshot.child("latitud").value.toString()
-                val longitud = dataSnapshot.child("longitud").value.toString()
-                val estado = dataSnapshot.child("estado").value.toString()
+            database.child("users").child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val name = dataSnapshot.child("name").value.toString()
+                    val email = dataSnapshot.child("email").value.toString()
+                    val latitud = dataSnapshot.child("latitud").value.toString()
+                    val longitud = dataSnapshot.child("longitud").value.toString()
+                    val estado = dataSnapshot.child("estado").value.toString()
 
-                nombreTextView.text = name
-                correoTextView.text = email
-                latitudTextView.text = latitud
-                longitudTextView.text = longitud
-                estadoTextView.text = estado
+                    nombreTextView.text = name
+                    correoTextView.text = email
+                    latitudTextView.text = latitud
+                    longitudTextView.text = longitud
+                    estadoTextView.text = estado
 
-                val color = if (estado == "disponible") {
-                    ContextCompat.getColor(this, android.R.color.holo_green_light)
-                } else {
-                    ContextCompat.getColor(this, android.R.color.holo_red_light)
+                    val color = if (estado == "Disponible") {
+                        ContextCompat.getColor(this@PerfilActivity, android.R.color.holo_green_light)
+                    } else {
+                        ContextCompat.getColor(this@PerfilActivity, android.R.color.holo_red_light)
+                    }
+                    estadoTextView.setTextColor(color)
                 }
-                estadoTextView.setTextColor(color)
-            }.addOnFailureListener {
-                Toast.makeText(this, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show()
-            }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(this@PerfilActivity, "Error al obtener los datos del usuario.", Toast.LENGTH_SHORT).show()
+                }
+            })
 
             // Obtener la lista de usuarios disponibles
-            database.child("users").get().addOnSuccessListener { dataSnapshot ->
-                val availableUsers = mutableListOf<String>()
-                for (snapshot in dataSnapshot.children) {
-                    val userStatus = snapshot.child("estado").getValue<String>()
-                    if (userStatus == "disponible") {
-                        val userName = snapshot.child("name").getValue<String>()
-                        val userEmail = snapshot.child("email").getValue<String>()
-                        if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
-                            availableUsers.add("$userName - $userEmail")
+            database.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val availableUsers = mutableListOf<String>()
+                    for (snapshot in dataSnapshot.children) {
+                        val userStatus = snapshot.child("estado").getValue(String::class.java)
+                        if (userStatus == "Disponible") {
+                            val userName = snapshot.child("name").getValue(String::class.java)
+                            val userEmail = snapshot.child("email").getValue(String::class.java)
+                            if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
+                                availableUsers.add("$userName - $userEmail")
+                                Log.d("PerfilActivity", "Usuario disponible encontrado: $userName - $userEmail")
+                            }
                         }
                     }
+                    availableUsersRecyclerView.adapter = AvailableUsersAdapter(availableUsers)
+                    Log.d("PerfilActivity", "Total de usuarios disponibles: ${availableUsers.size}")
                 }
-                availableUsersRecyclerView.adapter = AvailableUsersAdapter(availableUsers)
-            }.addOnFailureListener {
-                Toast.makeText(this, "Error al obtener la lista de usuarios disponibles.", Toast.LENGTH_SHORT).show()
-            }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(this@PerfilActivity, "Error al obtener la lista de usuarios disponibles.", Toast.LENGTH_SHORT).show()
+                }
+            })
         } ?: run {
             Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()
         }
