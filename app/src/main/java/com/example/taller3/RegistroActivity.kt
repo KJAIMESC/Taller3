@@ -1,6 +1,7 @@
 package com.example.taller3
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Email
@@ -15,6 +16,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class RegistroActivity: AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -26,6 +30,8 @@ class RegistroActivity: AppCompatActivity() {
     private lateinit var etId: TextInputEditText
     private lateinit var etLatitud: TextInputEditText
     private lateinit var etLongitud: TextInputEditText
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -37,6 +43,9 @@ class RegistroActivity: AppCompatActivity() {
         setContentView(R.layout.activity_registro)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
+
         bSignUp = findViewById(R.id.bSignUp)
         etName = findViewById(R.id.etName)
         etLastName = findViewById(R.id.etLastName)
@@ -45,6 +54,7 @@ class RegistroActivity: AppCompatActivity() {
         etId = findViewById(R.id.etId)
         etLatitud = findViewById(R.id.etLatitud)
         etLongitud = findViewById(R.id.etLongitud)
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
@@ -55,7 +65,60 @@ class RegistroActivity: AppCompatActivity() {
         setUp()
     }
 
+    private fun setUp() {
+        title = "Registro"
 
+        bSignUp.setOnClickListener {
+            if (etName.text?.isNotEmpty() == true &&
+                etLastName.text?.isNotEmpty() == true &&
+                etEmail.text?.isNotEmpty() == true &&
+                etPassword.text?.isNotEmpty() == true &&
+                etId.text?.isNotEmpty() == true
+            ) {
+                val email = etEmail.text.toString()
+                val password = etPassword.text.toString()
+
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user: FirebaseUser? = auth.currentUser
+                        user?.let {
+                            val uid = user.uid
+                            val userMap = hashMapOf(
+                                "name" to etName.text.toString(),
+                                "lastName" to etLastName.text.toString(),
+                                "email" to email,
+                                "id" to etId.text.toString(),
+                                "latitud" to etLatitud.text.toString(),
+                                "longitud" to etLongitud.text.toString()
+                            )
+
+                            database.child("users").child(uid).setValue(userMap).addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    val perfilIntent = Intent(this, PerfilActivity::class.java)
+                                    startActivity(perfilIntent)
+                                } else {
+                                    showAlert("Error al guardar los datos del usuario.")
+                                }
+                            }
+                        }
+                    } else {
+                        showAlert()
+                    }
+                }
+            } else {
+                showAlert("Por favor complete todos los campos.")
+            }
+        }
+    }
+
+    private fun showAlert(message: String = "Error autenticando al usuario") {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage(message)
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
 
     private fun getLastKnownLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -66,13 +129,6 @@ class RegistroActivity: AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
