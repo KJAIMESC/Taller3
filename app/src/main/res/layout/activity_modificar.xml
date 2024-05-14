@@ -48,18 +48,12 @@
                 app:layout_constraintTop_toBottomOf="@id/nombreEditText" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/latitudEditText"
+                android:id="@+id/IdEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Latitud"
+                android:hint="Numero de identificacion"
                 app:layout_constraintTop_toBottomOf="@id/correoEditText" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/longitudEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Longitud"
-                app:layout_constraintTop_toBottomOf="@id/latitudEditText" />
 
             <!-- Añade otros campos según sea necesario -->
 
