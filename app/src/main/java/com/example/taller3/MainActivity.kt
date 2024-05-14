@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Inicialización de Firebase Analytics
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        // Creación de un Bundle para los parámetros del evento
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "id_prueba")
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "nombre_prueba")
+
+        // Registro del evento en Firebase Analytics
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         bSignUp = findViewById(R.id.bSignUp)
         etEmail = findViewById(R.id.etEmail)
