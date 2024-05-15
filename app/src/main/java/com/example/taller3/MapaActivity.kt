@@ -9,7 +9,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,6 +36,8 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
     private lateinit var availableUserLocation: LatLng
     private lateinit var availableUserName: String
     private lateinit var availableUserId: String
+
+    private var initialCameraPositionSet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,12 +111,13 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
                     .title("Tu posición")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             )
+            if (!initialCameraPositionSet) {
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                initialCameraPositionSet = true
+            }
         } else {
             currentUserMarker?.position = currentLatLng
         }
-
-        // Mover la cámara para enfocar en la nueva posición
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -172,9 +174,6 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
             )
         }
-
-        // Mover la cámara para enfocar en la nueva posición del usuario disponible
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, 15f))
     }
 
     private fun startLocationUpdates() {
