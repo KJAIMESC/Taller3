@@ -38,7 +38,6 @@ class PerfilActivity : BarraActivity() {
         longitudTextView = findViewById(R.id.longitud)
         estadoTextView = findViewById(R.id.estado)
         availableUsersRecyclerView = findViewById(R.id.availableUsersRecyclerView)
-        mapButton = findViewById(R.id.mapButton)
 
         availableUsersRecyclerView.layoutManager = LinearLayoutManager(this)
 
