@@ -18,4 +18,7 @@
     <string name="latitud">Latitud</string>
     <string name="longitud">Longitud</string>
     <string name="descriptive_text_for_scroll_view">Descripción detallada del contenido desplazable en esta pantalla</string>
+    <string name="localizar">Localizar</string>
+    <string name="nombre_disponible">Nombre</string>
+    <string name="correo_disponible">Correo@correo.com</string>
 </resources>
