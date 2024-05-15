@@ -21,4 +21,9 @@
     <string name="localizar">Localizar</string>
     <string name="nombre_disponible">Nombre</string>
     <string name="correo_disponible">Correo@correo.com</string>
+    <string name="bienvenido">¡Bienvenido!</string>
+    <string name="este_es_tu_correo">Este es tu correo</string>
+    <string name="tus_coordenadas">Tus coordenadas</string>
+    <string name="lista_usuarios_disponibles">Lista usuarios disponibles</string>
+    <string name="tu_estado">Tu estado</string>
 </resources>

@@ -1,11 +1,10 @@
 package com.example.taller3
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +22,7 @@ class PerfilActivity : BarraActivity() {
     private lateinit var longitudTextView: TextView
     private lateinit var estadoTextView: TextView
     private lateinit var availableUsersRecyclerView: RecyclerView
-    private lateinit var mapButton: Button
+    private lateinit var availableUsersAdapter: AvailableUsersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,19 +36,13 @@ class PerfilActivity : BarraActivity() {
         latitudTextView = findViewById(R.id.latitud)
         longitudTextView = findViewById(R.id.longitud)
         estadoTextView = findViewById(R.id.estado)
-        availableUsersRecyclerView = findViewById(R.id.availableUsersRecyclerView)
 
-        availableUsersRecyclerView.layoutManager = LinearLayoutManager(this)
-
-        mapButton.setOnClickListener {
-            val intent = Intent(this, MapaActivity::class.java)
-            startActivity(intent)
-        }
-
+        // Check if user is authenticated
         val currentUser = auth.currentUser
-        currentUser?.let {
+        if (currentUser != null) {
             val uid = currentUser.uid
-            Log.d("PerfilActivity", "UID del usuario actual: $uid")
+
+            // Retrieve user data
             database.child("users").child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val name = dataSnapshot.child("name").value.toString()
@@ -57,8 +50,6 @@ class PerfilActivity : BarraActivity() {
                     val latitud = dataSnapshot.child("latitud").value.toString()
                     val longitud = dataSnapshot.child("longitud").value.toString()
                     val estado = dataSnapshot.child("estado").value.toString()
-
-                    Log.d("PerfilActivity", "Datos del usuario actual: $name, $email, $latitud, $longitud, $estado")
 
                     nombreTextView.text = name
                     correoTextView.text = email
@@ -80,23 +71,38 @@ class PerfilActivity : BarraActivity() {
                 }
             })
 
-            // Obtener la lista de usuarios disponibles
+            // Retrieve list of available users
             database.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val availableUsers = mutableListOf<String>()
+                    val availableUsers = mutableListOf<User>()
                     for (snapshot in dataSnapshot.children) {
                         val userStatus = snapshot.child("estado").getValue(String::class.java)
                         if (userStatus == "Disponible") {
                             val userName = snapshot.child("name").getValue(String::class.java)
                             val userEmail = snapshot.child("email").getValue(String::class.java)
+                            val userLatitudStr = snapshot.child("latitud").getValue(String::class.java)
+                            val userLongitudStr = snapshot.child("longitud").getValue(String::class.java)
+
+                            val userLatitud = userLatitudStr?.toDoubleOrNull() ?: 0.0
+                            val userLongitud = userLongitudStr?.toDoubleOrNull() ?: 0.0
+
                             if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
-                                availableUsers.add("$userName - $userEmail")
+                                val user = User(userName, userEmail, userLatitud, userLongitud)
+                                availableUsers.add(user)
                                 Log.d("PerfilActivity", "Usuario disponible encontrado: $userName - $userEmail")
                             }
                         }
                     }
-                    Log.d("PerfilActivity", "Total de usuarios disponibles: ${availableUsers.size}")
-                    availableUsersRecyclerView.adapter = AvailableUsersAdapter(availableUsers)
+
+                    // Log number of available users
+                    Log.d("PerfilActivity", "Number of available users: ${availableUsers.size}")
+
+                    // Initialize RecyclerView and set up adapter
+                    availableUsersRecyclerView = findViewById(R.id.availableUsersRecyclerView)
+                    availableUsersRecyclerView.layoutManager = LinearLayoutManager(this@PerfilActivity)
+                    availableUsersAdapter = AvailableUsersAdapter(availableUsers, this@PerfilActivity)
+                    availableUsersRecyclerView.adapter = availableUsersAdapter
+                    availableUsersAdapter.notifyDataSetChanged() // Notify adapter of data change
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -104,30 +110,9 @@ class PerfilActivity : BarraActivity() {
                     Toast.makeText(this@PerfilActivity, "Error al obtener la lista de usuarios disponibles.", Toast.LENGTH_SHORT).show()
                 }
             })
-        } ?: run {
+        } else {
             Log.e("PerfilActivity", "Usuario no autenticado.")
             Toast.makeText(this, "Usuario no autenticado.", Toast.LENGTH_SHORT).show()
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

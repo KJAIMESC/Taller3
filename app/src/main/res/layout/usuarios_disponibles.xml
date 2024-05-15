@@ -37,6 +37,8 @@
         android:layout_marginBottom="5dp"
         android:layout_marginEnd="30dp"
         android:text="@string/localizar"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

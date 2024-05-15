@@ -29,7 +29,7 @@
             android:gravity="center"
             android:paddingHorizontal="16dp"
             android:paddingVertical="0dp"
-            android:text="¡Bienvenido!"
+            android:text="@string/bienvenido"
             android:textColor="@color/purple"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -78,7 +78,7 @@
             android:gravity="center"
             android:paddingHorizontal="16dp"
             android:paddingVertical="0dp"
-            android:text="Este es tu correo"
+            android:text="@string/este_es_tu_correo"
             android:textColor="@color/purple"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -128,7 +128,7 @@
             android:gravity="center"
             android:paddingHorizontal="16dp"
             android:paddingVertical="0dp"
-            android:text="Tus coordenadas"
+            android:text="@string/tus_coordenadas"
             android:textColor="@color/purple"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -206,7 +206,7 @@
             android:gravity="center"
             android:paddingHorizontal="16dp"
             android:paddingVertical="0dp"
-            android:text="Tu estado"
+            android:text="@string/tu_estado"
             android:textColor="@color/purple"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -256,7 +256,7 @@
             android:gravity="center"
             android:paddingHorizontal="16dp"
             android:paddingVertical="0dp"
-            android:text="Lista usuarios disponibles"
+            android:text="@string/lista_usuarios_disponibles"
             android:textColor="@color/purple"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -265,10 +265,9 @@
 
     <LinearLayout
         android:id="@+id/linearLayout11"
-        android:layout_width="409dp"
-        android:layout_height="136dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -277,14 +276,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/availableUsersRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
 
