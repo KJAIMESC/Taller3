@@ -143,16 +143,12 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
         // Escuchar cambios en la ubicación del usuario disponible
         database.child("users").child(availableUserId).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val latitudStr = snapshot.child("latitud").getValue(String::class.java)
-                val longitudStr = snapshot.child("longitud").getValue(String::class.java)
-                if (latitudStr != null && longitudStr != null) {
-                    try {
-                        val latitud = latitudStr.toDouble()
-                        val longitud = longitudStr.toDouble()
-                        updateAvailableUserLocation(LatLng(latitud, longitud))
-                    } catch (e: NumberFormatException) {
-                        Log.e("MapaActivity", "Error al convertir latitud/longitud a Double: ", e)
-                    }
+                // Obteniendo latitud y longitud como Double directamente
+                val latitud = snapshot.child("latitud").getValue(Double::class.java)
+                val longitud = snapshot.child("longitud").getValue(Double::class.java)
+
+                if (latitud != null && longitud != null) {
+                    updateAvailableUserLocation(LatLng(latitud, longitud))
                 } else {
                     Log.e("MapaActivity", "Latitud o longitud es nulo")
                 }
@@ -163,7 +159,6 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
             }
         })
     }
-
 
     private fun updateAvailableUserLocation(newLocation: LatLng) {
         // Actualizar el pin azul en el mapa
@@ -196,7 +191,7 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationUpdates()
             } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show()
             }
         }
     }
