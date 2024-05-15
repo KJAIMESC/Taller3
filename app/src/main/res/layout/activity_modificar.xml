@@ -6,31 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ModificarActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <!-- Barra personalizada en lugar del AppBarLayout -->
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/activity_barra"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_gravity="top" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/black"
-            app:menu="@menu/top_app_bar"
-            app:navigationIcon="@drawable/ic_menu_24"
-            app:title="@string/page_title" />
-    </com.google.android.material.appbar.AppBarLayout>
-
+    <!-- NestedScrollView para permitir desplazamiento -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/fondo"
+        android:layout_marginTop="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -44,47 +39,44 @@
                 android:id="@+id/apellidoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Apellido"
-                app:layout_constraintTop_toBottomOf="@id/nombreEditText"/>
+                android:hint="Apellido" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/correoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Correo"
-                app:layout_constraintTop_toBottomOf="@id/apellidoEditText" />
+                android:hint="Correo" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/IdEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Número de identificación"
-                app:layout_constraintTop_toBottomOf="@id/correoEditText" />
+                android:hint="Número de identificación" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Contraseña"
-                android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@id/IdEditText" />
+                android:inputType="textPassword" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/confirmPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Confirmar contraseña"
-                android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+                android:inputType="textPassword" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/guardarCambiosButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Guardar cambios"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_selector"
+                android:textColor="#FFFFFF" />
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

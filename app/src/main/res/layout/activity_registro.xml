@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/fondo"
     tools:context=".RegistroActivity">
 
     <ImageButton
@@ -161,7 +162,7 @@
             android:inputType="textEmailAddress"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -173,7 +174,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilLongitud" />
+        app:layout_constraintTop_toBottomOf="@id/tilLongitud"
+        android:background="@drawable/button_selector" />
+
 
     <ProgressBar
         android:id="@+id/pbSignUp"

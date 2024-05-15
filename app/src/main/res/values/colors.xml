@@ -15,4 +15,6 @@
     <color name="amarillo">#F4FF25</color>
     <color name="naranja">#FFA425</color>
     <color name="rojo">#FF4025</color>
+    <color name="fondo">#E9F9FC</color>
+    <color name="texto">#0EA0BB</color>
 </resources>

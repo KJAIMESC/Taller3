@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/fondo">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivLogo"
@@ -81,7 +82,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="1"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bLogin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -91,7 +92,9 @@
             app:layout_constraintBottom_toTopOf="@id/bSignUp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bPasswordRecovery" />
+            app:layout_constraintTop_toBottomOf="@id/bPasswordRecovery"
+            android:background="@drawable/button_selector"/>
+
 
         <ProgressBar
             android:id="@+id/pbLogin"
@@ -113,6 +116,7 @@
             android:layout_marginHorizontal="16dp"
             android:paddingVertical="14dp"
             android:text="@string/registro"
+            android:textColor="@color/texto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
