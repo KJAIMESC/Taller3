@@ -36,6 +36,11 @@ class PerfilActivity : BarraActivity() {
         latitudTextView = findViewById(R.id.latitud)
         longitudTextView = findViewById(R.id.longitud)
         estadoTextView = findViewById(R.id.estado)
+        availableUsersRecyclerView = findViewById(R.id.availableUsersRecyclerView)
+
+        availableUsersRecyclerView.layoutManager = LinearLayoutManager(this)
+        availableUsersAdapter = AvailableUsersAdapter(emptyList(), this)
+        availableUsersRecyclerView.adapter = availableUsersAdapter
 
         // Check if user is authenticated
         val currentUser = auth.currentUser
@@ -97,12 +102,8 @@ class PerfilActivity : BarraActivity() {
                     // Log number of available users
                     Log.d("PerfilActivity", "Number of available users: ${availableUsers.size}")
 
-                    // Initialize RecyclerView and set up adapter
-                    availableUsersRecyclerView = findViewById(R.id.availableUsersRecyclerView)
-                    availableUsersRecyclerView.layoutManager = LinearLayoutManager(this@PerfilActivity)
-                    availableUsersAdapter = AvailableUsersAdapter(availableUsers, this@PerfilActivity)
-                    availableUsersRecyclerView.adapter = availableUsersAdapter
-                    availableUsersAdapter.notifyDataSetChanged() // Notify adapter of data change
+                    // Set up adapter with the list of available users
+                    availableUsersAdapter.updateUsers(availableUsers)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
