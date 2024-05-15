@@ -5,5 +5,5 @@ data class User(
     val email: String,
     val latitud: Double,
     val longitud: Double,
-    val id: String = ""
+    val id: String
 )

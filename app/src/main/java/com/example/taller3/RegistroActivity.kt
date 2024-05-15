@@ -82,13 +82,21 @@ class RegistroActivity : AppCompatActivity() {
                         val user: FirebaseUser? = auth.currentUser
                         user?.let {
                             val uid = user.uid
+                            val latitud = etLatitud.text.toString().toDoubleOrNull()
+                            val longitud = etLongitud.text.toString().toDoubleOrNull()
+
+                            if (latitud == null || longitud == null) {
+                                showAlert("Error al convertir latitud/longitud a Double.")
+                                return@addOnCompleteListener
+                            }
+
                             val userMap = hashMapOf(
                                 "name" to etName.text.toString(),
                                 "lastName" to etLastName.text.toString(),
                                 "email" to email,
                                 "id" to etId.text.toString(),
-                                "latitud" to etLatitud.text.toString(),
-                                "longitud" to etLongitud.text.toString()
+                                "latitud" to latitud,
+                                "longitud" to longitud
                             )
 
                             database.child("users").child(uid).setValue(userMap).addOnCompleteListener { task ->
@@ -136,7 +144,7 @@ class RegistroActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastKnownLocation()
             } else {
                 Toast.makeText(this, "Permiso de ubicación denegado.", Toast.LENGTH_SHORT).show()

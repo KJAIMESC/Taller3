@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,16 +49,16 @@ class PerfilActivity : BarraActivity() {
             // Retrieve user data
             database.child("users").child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val name = dataSnapshot.child("name").value.toString()
-                    val email = dataSnapshot.child("email").value.toString()
-                    val latitud = dataSnapshot.child("latitud").value.toString()
-                    val longitud = dataSnapshot.child("longitud").value.toString()
-                    val estado = dataSnapshot.child("estado").value.toString()
+                    val name = dataSnapshot.child("name").getValue(String::class.java) ?: ""
+                    val email = dataSnapshot.child("email").getValue(String::class.java) ?: ""
+                    val latitud = dataSnapshot.child("latitud").getValue(Any::class.java)?.toString()?.toDoubleOrNull() ?: 0.0
+                    val longitud = dataSnapshot.child("longitud").getValue(Any::class.java)?.toString()?.toDoubleOrNull() ?: 0.0
+                    val estado = dataSnapshot.child("estado").getValue(String::class.java) ?: ""
 
                     nombreTextView.text = name
                     correoTextView.text = email
-                    latitudTextView.text = latitud
-                    longitudTextView.text = longitud
+                    latitudTextView.text = latitud.toString()
+                    longitudTextView.text = longitud.toString()
                     estadoTextView.text = estado
 
                     val color = if (estado == "Disponible") {
@@ -83,16 +82,14 @@ class PerfilActivity : BarraActivity() {
                     for (snapshot in dataSnapshot.children) {
                         val userStatus = snapshot.child("estado").getValue(String::class.java)
                         if (userStatus == "Disponible") {
-                            val userName = snapshot.child("name").getValue(String::class.java)
-                            val userEmail = snapshot.child("email").getValue(String::class.java)
-                            val userLatitudStr = snapshot.child("latitud").getValue(String::class.java)
-                            val userLongitudStr = snapshot.child("longitud").getValue(String::class.java)
+                            val userName = snapshot.child("name").getValue(String::class.java) ?: ""
+                            val userEmail = snapshot.child("email").getValue(String::class.java) ?: ""
+                            val userLatitud = snapshot.child("latitud").getValue(Any::class.java)?.toString()?.toDoubleOrNull() ?: 0.0
+                            val userLongitud = snapshot.child("longitud").getValue(Any::class.java)?.toString()?.toDoubleOrNull() ?: 0.0
 
-                            val userLatitud = userLatitudStr?.toDoubleOrNull() ?: 0.0
-                            val userLongitud = userLongitudStr?.toDoubleOrNull() ?: 0.0
-
-                            if (!userName.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
-                                val user = User(userName, userEmail, userLatitud, userLongitud)
+                            if (userName.isNotEmpty() && userEmail.isNotEmpty()) {
+                                val userId = snapshot.key ?: ""
+                                val user = User(userName, userEmail, userLatitud, userLongitud, userId)
                                 availableUsers.add(user)
                                 Log.d("PerfilActivity", "Usuario disponible encontrado: $userName - $userEmail")
                             }

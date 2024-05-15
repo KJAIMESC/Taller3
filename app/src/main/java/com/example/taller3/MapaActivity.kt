@@ -143,10 +143,18 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
         // Escuchar cambios en la ubicación del usuario disponible
         database.child("users").child(availableUserId).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val latitud = snapshot.child("latitud").getValue(Double::class.java)
-                val longitud = snapshot.child("longitud").getValue(Double::class.java)
-                if (latitud != null && longitud != null) {
-                    updateAvailableUserLocation(LatLng(latitud, longitud))
+                val latitudStr = snapshot.child("latitud").getValue(String::class.java)
+                val longitudStr = snapshot.child("longitud").getValue(String::class.java)
+                if (latitudStr != null && longitudStr != null) {
+                    try {
+                        val latitud = latitudStr.toDouble()
+                        val longitud = longitudStr.toDouble()
+                        updateAvailableUserLocation(LatLng(latitud, longitud))
+                    } catch (e: NumberFormatException) {
+                        Log.e("MapaActivity", "Error al convertir latitud/longitud a Double: ", e)
+                    }
+                } else {
+                    Log.e("MapaActivity", "Latitud o longitud es nulo")
                 }
             }
 
@@ -155,6 +163,7 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
             }
         })
     }
+
 
     private fun updateAvailableUserLocation(newLocation: LatLng) {
         // Actualizar el pin azul en el mapa
