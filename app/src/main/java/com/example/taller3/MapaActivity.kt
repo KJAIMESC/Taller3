@@ -169,7 +169,7 @@ class MapaActivity : BarraActivity(), OnMapReadyCallback {
             )
         }
 
-        // Mover la cámara para enfocar en la nueva posición
+        // Mover la cámara para enfocar en la nueva posición del usuario disponible
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, 15f))
     }
 
